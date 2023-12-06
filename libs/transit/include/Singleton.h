@@ -5,7 +5,6 @@
 
 #include "Drone.h"
 #include "Package.h"
-#include "IStategy.h"
 #include "math/vector3.h"
 
 /**
@@ -92,6 +91,7 @@ class Singleton{
          * @brief singleton deconstructor
          */
         ~Singleton();
+
         static Singleton* singleton_;
         float drone_speed;
 
@@ -117,6 +117,5 @@ class Singleton{
         std::vector<float> downtimes;
 
     
-}
-
+};
 #endif
