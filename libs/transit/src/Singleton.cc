@@ -1,19 +1,23 @@
 #include "Singleton.h"
 
-Singleton::Singleton(){
+#include <fstream>
+#include <iostream>
 
-}
+Singleton::Singleton() { singleton_ = nullptr; }
 
-Singleton::~Singleton(){
-
-}
+Singleton::~Singleton() { delete singleton_; }
 
 Singleton::Singleton(const Singleton& other) = delete;
 
 Singleton& Singleton::operator=(const Singleton& other) = delete;
 
-Singleton* Singleton::get_instance(){
+
+Singleton* Singleton::get_instance() {
+  if (singleton_ == nullptr) {
+    singleton_ = new Singleton();
+  } else {
     return singleton_;
+  }
 }
 
 float Singleton::get_speed(Drone drone){
@@ -83,7 +87,7 @@ void Singleton::get_strat_times(){
     }    
 }
 
-void get_package_times(){
+void Singleton::get_package_times(){
     float time = 0.0;
     for(int i = 0; i < package_distances.size(); i++){
         time = package_distances[i] / drone_speed;
@@ -100,9 +104,120 @@ void Singleton::get_downtime(Drone drone, Package package){
 }
 
 void Singleton::analyze_data(){
+    
+    avg_astar_time = 0;
+    avg_beeline_time = 0;
+    avg_bfs_time = 0;
+    avg_dfs_time = 0;
+    avg_dijkstra_time = 0;
 
+    avg_astar_distance = 0;
+    avg_beeline_distance = 0;
+    avg_bfs_distance = 0;
+    avg_dfs_distance = 0;
+    avg_dijkstra_distance = 0;
+    
+    for(int i = 0; i < astar_times.size(); i++){
+        avg_astar_time += astar_times[i];
+        avg_astar_distance += astar_distances[i];
+    }
+    avg_astar_time = avg_astar_time / astar_times.size();
+    avg_astar_distance = avg_astar_distance / astar_distances.size();
+
+    astar_details.push_back(drone_speed);
+    astar_details.push_back(avg_astar_distance);
+    astar_details.push_back(avg_astar_time);
+
+    
+
+    for(int i = 0; i < beeline_times.size(); i++){
+        avg_astar_time += beeline_times[i];
+        avg_beeline_distance += beeline_distances[i];
+    }
+    avg_beeline_time = avg_beeline_time / beeline_times.size();
+    avg_beeline_distance = avg_beeline_distance / beeline_distances.size();
+
+    beeline_details.push_back(drone_speed);
+    beeline_details.push_back(avg_beeline_distance);
+    beeline_details.push_back(avg_beeline_time);
+    
+
+    for(int i = 0; i < bfs_times.size(); i++){
+        avg_bfs_time += bfs_times[i];
+        avg_bfs_distance += bfs_distances[i];
+    }
+    avg_bfs_time = avg_bfs_time / bfs_times.size();
+    avg_bfs_distance = avg_bfs_distance / bfs_distances.size();
+
+    bfs_details.push_back(drone_speed);
+    bfs_details.push_back(avg_bfs_distance);
+    bfs_details.push_back(avg_bfs_time);
+    
+
+    for(int i = 0; i < dfs_times.size(); i++){
+        avg_dfs_time += dfs_times[i];
+        avg_dfs_distance += dfs_distances[i];
+    }
+    avg_dfs_time = avg_dfs_time / dfs_times.size();
+    avg_dfs_distance = avg_dfs_distance / dfs_distances.size();
+
+    dfs_details.push_back(drone_speed);
+    dfs_details.push_back(avg_dfs_distance);
+    dfs_details.push_back(avg_dfs_time);
+    
+
+    for(int i = 0; i < dijkstra_times.size(); i++){
+        avg_dijkstra_time += dijkstra_times[i];
+        avg_dijkstra_time += dijkstra_distances[i];
+    }
+    avg_dijkstra_time = avg_dijkstra_time / dijkstra_times.size();
+    avg_dijkstra_distance = avg_dijkstra_distance / dijkstra_distances.size();
+
+    dijkstra_details.push_back(drone_speed);
+    dijkstra_details.push_back(avg_dijkstra_distance);
+    dijkstra_details.push_back(avg_dijkstra_time);
+    
 }
 
-void Singleton::export_to_csv(){
+void Singleton::export_to_csv() {
+  std::ofstream file;
+  file.open("analysis.csv");
+  file << "Raw Data\n";
+  file << ",Pickup, Dropoff, Time, Strategy, Downtime, Distance";
 
+  for (int i = 1; i <= package_startpoints.size(); i++) {
+    file << "package" + std::to_string(i) + ",";
+    file << std::to_string(package_startpoints.at(i)[0]) + "." +
+                std::to_string(package_startpoints.at(i)[1]) + "." +
+                std::to_string(package_startpoints.at(i)[2]) + "," +
+                std::to_string(endpoints.at(i)[0]) + "." +
+                std::to_string(endpoints.at(i)[1]) + "." +
+                std::to_string(endpoints.at(i)[2]) + "," +
+                std::to_string(package_times.at(i)) + "," +
+                std::to_string(package_strats.at(i)) + "," +
+                std::to_string(downtimes.at(i)) + "," +
+                std::to_string(package_distances.at(i)) + ",\n";
+  }
+  file << "\n";
+  file << "\n";
+
+  file << "Analyzed Data\n";
+  file << ", Average Speed, Average Distance, Average Crowfly time, Average "
+          "Time\n";
+
+  file << "Astar," + std::to_string(astar_details.at(0)) + "," +
+              std::to_string(astar_details.at(1)) + "," +
+              std::to_string(astar_details.at(2)) + "\n";
+  file << "BFS," + std::to_string(bfs_details.at(0)) + "," +
+              std::to_string(bfs_details.at(1)) + "," +
+              std::to_string(bfs_details.at(2)) + "\n";
+  file << "DFS," + std::to_string(dfs_details.at(0)) + "," +
+              std::to_string(dfs_details.at(1)) + "," +
+              std::to_string(dfs_details.at(2)) + "\n";
+  file << "Dikjstra," + std::to_string(dikjstra_details.at(0)) + "," +
+              std::to_string(dikjstra_details.at(1)) + "," +
+              std::to_string(dikjstra_details.at(2)) + "\n";
+  file << "Beeline," + std::to_string(beeline_details.at(0)) + "," +
+              std::to_string(beeline_details.at(1)) + "," +
+              std::to_string(beeline_details.at(2)) + "\n";
 }

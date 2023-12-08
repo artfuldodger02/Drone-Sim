@@ -125,6 +125,30 @@ class Singleton{
         std::vector<std::string> package_strats;
         std::vector<double> package_distances;
 
+        // index 0: avg speed 
+        // index 1: avg distance
+        // index 2: avg time
+
+        std::vector<float> astar_details;
+        std::vector<float> beeline_details;
+        std::vector<float> dfs_details;
+        std::vector<float> bfs_details;
+        std::vector<float> dijkstra_details;
+
+        float avg_astar_time;
+        float avg_beeline_time;
+        float avg_bfs_time;
+        float avg_dfs_time;
+        float avg_dijkstra_time;
+
+        float avg_astar_distance;
+        float avg_beeline_distance;
+        float avg_bfs_distance;
+        float avg_dfs_distance;
+        float avg_dijkstra_distance;
+
+
+
     
 };
 #endif
