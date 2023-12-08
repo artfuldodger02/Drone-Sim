@@ -25,27 +25,27 @@ float Singleton::get_speed(Drone drone){
 }
 
 void Singleton::get_drone_startpoint(Drone drone){
-    drone_startpoints.push_back(drone->getPosition());
+    drone_startpoints.push_back(drone.getPosition());
 }
 
 void Singleton::get_package_startpoint(Package package){
-    package_startpoints.push_back(package->getPosition());
+    package_startpoints.push_back(package.getPosition());
 }
 
 void Singleton::get_endpoint(Package package){
-    endpoints.push_back(package->getDestination());
+    endpoints.push_back(package.getDestination());
 }
 
 void Singleton::get_distances(Package package){ //ask TA's on friday
-    std::string strat = package->getStrategyName();
+    std::string strat = package.getStrategyName();
     package_strats.push_back(strat); // quick add the strat to the appropriate array
 
-    Vector3 startpoint = package->getPosition();
-    Vector3 endpoint = package->getDestination();
-    Vector3 distance = startpoint->dist(endpoint);
+    Vector3 startpoint = package.getPosition();
+    Vector3 endpoint = package.getDestination();
+    float distance = startpoint.dist(endpoint);
     package_distances.push_back(distance); // quick add the distance to the appropriate array
 
-    if strat == "astar"{
+    if (strat == "astar"){
         astar_distances.push_back(distance);
     } else if (strat == "dfs") {
         dfs_distances.push_back(distance);
@@ -81,7 +81,7 @@ void Singleton::get_strat_times(){
         dijkstra_times.push_back(time);
     }
     // get beeline times
-    for(int i = 0; i < beelinedistances.size(); i++){
+    for(int i = 0; i < beeline_distances.size(); i++){
         time = beeline_distances[i] / drone_speed;
         beeline_times.push_back(time);
     }    
@@ -98,7 +98,7 @@ void Singleton::get_package_times(){
 void Singleton::get_downtime(Drone drone, Package package){
     Vector3 drone_pos = drone.getPosition();
     Vector3 package_pos = package.getPosition();
-    double distance = drone_pos->dist(package_pos);
+    double distance = drone_pos.dist(package_pos);
 
     downtimes.push_back(distance/drone_speed);
 }
@@ -194,9 +194,10 @@ void Singleton::export_to_csv() {
                 std::to_string(endpoints.at(i)[1]) + "." +
                 std::to_string(endpoints.at(i)[2]) + "," +
                 std::to_string(package_times.at(i)) + "," +
-                std::to_string(package_strats.at(i)) + "," +
+                package_strats.at(i) + "," +
                 std::to_string(downtimes.at(i)) + "," +
                 std::to_string(package_distances.at(i)) + ",\n";
+
   }
   file << "\n";
   file << "\n";
@@ -214,9 +215,9 @@ void Singleton::export_to_csv() {
   file << "DFS," + std::to_string(dfs_details.at(0)) + "," +
               std::to_string(dfs_details.at(1)) + "," +
               std::to_string(dfs_details.at(2)) + "\n";
-  file << "Dikjstra," + std::to_string(dikjstra_details.at(0)) + "," +
-              std::to_string(dikjstra_details.at(1)) + "," +
-              std::to_string(dikjstra_details.at(2)) + "\n";
+  file << "Dijkstra," + std::to_string(dijkstra_details.at(0)) + "," +
+              std::to_string(dijkstra_details.at(1)) + "," +
+              std::to_string(dijkstra_details.at(2)) + "\n";
   file << "Beeline," + std::to_string(beeline_details.at(0)) + "," +
               std::to_string(beeline_details.at(1)) + "," +
               std::to_string(beeline_details.at(2)) + "\n";
