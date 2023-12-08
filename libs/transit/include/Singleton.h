@@ -50,27 +50,33 @@ class Singleton{
         void get_package_startpoint(Package package);
         /**
          * @brief gets the endpoint of the package/drone and logs it in package_startpoints
-         * @param drone the drone we are getting the endpoint of
+         * @param drone the package we are getting the endpoint of
          */
-        void get_endpoint(Drone drone);
+        void get_endpoint(Package package);
         /**
          * @brief gets the distance traveled by a strategy and logs it in
          * the appropriate strategy_distance variables
-         * @param strat the strategy we are getting the distance of
+         * @param package the package we get the strat name from
          */
-        void get_distances(IStrategy* strat);
+        void get_distances(Package package);
         /**
          * @brief gets the time it takes for a strategy to complete and logs it in
          * the appropriate strategy_time variable
-         * @param strat the strategy we are getting the time of
          */
-        void get_strat_time(IStrategy* strat);
+        void get_strat_times();
         /**
          * @brief gets the time between when a drone gets a new scheduled
          * package and when it picks up said package, and stores it in
          * downtimes array
+         * @param drone the drone we are getting the downtime of
+         * @param package the package we need to get the position of
          */
-        void get_downtime(); 
+        void get_downtime(Drone drone, Package package); 
+         /**
+         * @brief gets the time it takes for the packages to 
+         * make it to their destinations, and logs it in array
+         */
+        void get_package_times();
         /**
          * @brief takes the data we've aquired and computes average speed,
          * average distance, comparing to crowfly time, and the average time
@@ -100,21 +106,24 @@ class Singleton{
         std::vector<Vector3> endpoints;
 
         std::vector<float> astar_times;
-        std::vector<float> astar_distances;
+        std::vector<double> astar_distances;
 
         std::vector<float> beeline_times;
-        std::vector<float> beeline_distances;
+        std::vector<double> beeline_distances;
 
         std::vector<float> bfs_times;
-        std::vector<float> bfs_distances;
+        std::vector<double> bfs_distances;
 
         std::vector<float> dfs_times;
-        std::vector<float> dfs_distances;
+        std::vector<double> dfs_distances;
 
         std::vector<float> dijkstra_times;
-        std::vector<float> dijkstra_distances;
+        std::vector<double> dijkstra_distances;
 
         std::vector<float> downtimes;
+        std::vector<float> package_times;
+        std::vector<std::string> package_strats;
+        std::vector<double> package_distances;
 
     
 };
