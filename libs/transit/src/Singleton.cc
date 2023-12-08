@@ -13,7 +13,7 @@ Singleton::Singleton(const Singleton& other) = delete;
 Singleton& Singleton::operator=(const Singleton& other) = delete;
 
 Singleton* Singleton::get_instance(){
-
+    return singleton_;
 }
 
 float Singleton::get_speed(Drone drone){
