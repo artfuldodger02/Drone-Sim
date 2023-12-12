@@ -89,7 +89,7 @@ void SimulationModel::scheduleTrip(JsonObject& details) {
     scheduledDeliveries.push_back(package);
     controller.sendEventToView("DeliveryScheduled", details);
   }
-
+  singleton->get_downtime(*package);
   singleton->get_package_startpoint(*package);
   singleton->get_endpoint(*package);
   singleton->get_distances(*package);
