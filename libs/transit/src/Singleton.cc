@@ -21,6 +21,7 @@ Singleton* Singleton::get_instance() {
 }
 
 float Singleton::get_speed(Drone drone){
+    drone_speed = drone.getSpeed();
     return drone.getSpeed();
 }
 
