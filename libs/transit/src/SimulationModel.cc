@@ -39,6 +39,9 @@ IEntity* SimulationModel::createEntity(JsonObject& entity) {
     entities[myNewEntity->getId()] = myNewEntity;
   }
 
+  if( name == "Drone" || name == "drone" ){
+    singleton->get_speed(myNewEntity);
+  }
   return myNewEntity;
 }
 

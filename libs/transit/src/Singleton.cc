@@ -22,13 +22,13 @@ Singleton* Singleton::get_instance() {
 }
 
 
-float Singleton::get_speed(Drone drone){
-    drone_speed = drone.getSpeed();
-    return drone.getSpeed();
+float Singleton::get_speed(IEntity* drone){
+    drone_speed = drone->getSpeed();
+    return drone->getSpeed();
 }
 
-void Singleton::get_drone_startpoint(Drone drone){
-    drone_startpoints.push_back(drone.getPosition());
+void Singleton::get_drone_startpoint(IEntity* drone){
+    drone_startpoints.push_back(drone->getPosition());
 }
 
 void Singleton::get_package_startpoint(Package package){
@@ -98,8 +98,8 @@ void Singleton::get_package_times(){
     }
 }
 
-void Singleton::get_downtime(Drone drone, Package package){
-    Vector3 drone_pos = drone.getPosition();
+void Singleton::get_downtime(IEntity* drone, Package package){
+    Vector3 drone_pos = drone->getPosition();
     Vector3 package_pos = package.getPosition();
     double distance = drone_pos.dist(package_pos);
 

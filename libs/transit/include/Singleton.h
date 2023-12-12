@@ -33,16 +33,16 @@ class Singleton{
         static Singleton* get_instance(); 
         /**
          * @brief gets the speed of the drone
-         * @param drone the drone we are getting the speed of
+         * @param drone the drone Entity we are getting the speed of
          * @return float representing the speed
          */
-        float get_speed(Drone drone);
+        float get_speed(IEntity* drone);
 
         /**
          * @brief gets the startpoint of the drone and logs it in drone_startpoints
          * @param drone the drone we are getting the startpoint of
          */
-        void get_drone_startpoint(Drone drone);
+        void get_drone_startpoint(IEntity* drone);
         /**
          * @brief gets the startpoint of the package and logs it in package_startpoints
          * @param package the package we are getting the startpoint of
@@ -71,7 +71,7 @@ class Singleton{
          * @param drone the drone we are getting the downtime of
          * @param package the package we need to get the position of
          */
-        void get_downtime(Drone drone, Package package); 
+        void get_downtime(IEntity* drone, Package package); 
          /**
          * @brief gets the time it takes for the packages to 
          * make it to their destinations, and logs it in array
