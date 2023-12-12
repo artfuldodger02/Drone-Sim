@@ -68,10 +68,9 @@ class Singleton{
          * @brief gets the time between when a drone gets a new scheduled
          * package and when it picks up said package, and stores it in
          * downtimes array
-         * @param drone the drone we are getting the downtime of
          * @param package the package we need to get the position of
          */
-        void get_downtime(IEntity* drone, Package package); 
+        void get_downtime(Package package); 
          /**
          * @brief gets the time it takes for the packages to 
          * make it to their destinations, and logs it in array

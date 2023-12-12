@@ -98,12 +98,15 @@ void Singleton::get_package_times(){
     }
 }
 
-void Singleton::get_downtime(IEntity* drone, Package package){
-    Vector3 drone_pos = drone->getPosition();
-    Vector3 package_pos = package.getPosition();
-    double distance = drone_pos.dist(package_pos);
+void Singleton::get_downtime(Package package){
+    if(endpoints.size() > 0){
+    
+        Vector3 drone_pos = endpoints[endpoints.size()-1];
+        Vector3 package_pos = package.getPosition();
+        double distance = drone_pos.dist(package_pos);
 
-    downtimes.push_back(distance/drone_speed);
+        downtimes.push_back(distance/drone_speed);
+    }
 }
 
 void Singleton::analyze_data(){
