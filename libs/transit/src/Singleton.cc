@@ -3,9 +3,11 @@
 #include <fstream>
 #include <iostream>
 
-Singleton::Singleton() { singleton_ = nullptr; }
+Singleton* Singleton::singleton_ = nullptr;
 
-Singleton::~Singleton() { delete singleton_; }
+Singleton::Singleton() {}
+
+Singleton::~Singleton() {}
 
 Singleton::Singleton(const Singleton& other) = delete;
 

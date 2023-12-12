@@ -88,7 +88,7 @@ class SimulationModel {
   const routing::IGraph* graph;
   CompositeFactory entityFactory;
   
-  Singleton singleton;
+  Singleton *singleton;
 };
 
 #endif
