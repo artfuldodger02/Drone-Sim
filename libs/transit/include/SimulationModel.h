@@ -7,6 +7,7 @@
 #include "IEntity.h"
 #include "Robot.h"
 #include "graph.h"
+#include "Singleton.h"
 #include <deque>
 #include <map>
 #include <set>
@@ -86,6 +87,8 @@ class SimulationModel {
   void removeFromSim(int id);
   const routing::IGraph* graph;
   CompositeFactory entityFactory;
+  
+  Singleton singleton;
 };
 
 #endif

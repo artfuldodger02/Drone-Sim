@@ -14,6 +14,8 @@ SimulationModel::SimulationModel(IController& controller)
   entityFactory.AddFactory(new RobotFactory());
   entityFactory.AddFactory(new HumanFactory());
   entityFactory.AddFactory(new HelicopterFactory());
+
+  singleton->get_instance();
 }
 
 SimulationModel::~SimulationModel() {
