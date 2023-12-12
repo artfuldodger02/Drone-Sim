@@ -17,10 +17,10 @@ Singleton& Singleton::operator=(const Singleton& other) = delete;
 Singleton* Singleton::get_instance() {
   if (singleton_ == nullptr) {
     singleton_ = new Singleton();
-  } else {
-    return singleton_;
   }
+  return singleton_;
 }
+
 
 float Singleton::get_speed(Drone drone){
     drone_speed = drone.getSpeed();
