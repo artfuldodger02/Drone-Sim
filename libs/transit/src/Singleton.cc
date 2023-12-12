@@ -227,4 +227,6 @@ void Singleton::export_to_csv() {
   file << "Beeline," + std::to_string(beeline_details.at(0)) + "," +
               std::to_string(beeline_details.at(1)) + "," +
               std::to_string(beeline_details.at(2)) + "\n";
+  file.close();
+
 }
