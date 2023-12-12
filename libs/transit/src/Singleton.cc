@@ -27,9 +27,9 @@ float Singleton::get_speed(IEntity* drone){
     return drone->getSpeed();
 }
 
-void Singleton::get_drone_startpoint(IEntity* drone){
-    drone_startpoints.push_back(drone->getPosition());
-}
+// void Singleton::get_drone_startpoint(IEntity* drone){
+//     drone_startpoints.push_back(drone->getPosition());
+// }
 
 void Singleton::get_package_startpoint(Package package){
     package_startpoints.push_back(package.getPosition());

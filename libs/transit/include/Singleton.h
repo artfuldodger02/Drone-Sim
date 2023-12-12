@@ -42,7 +42,7 @@ class Singleton{
          * @brief gets the startpoint of the drone and logs it in drone_startpoints
          * @param drone the drone we are getting the startpoint of
          */
-        void get_drone_startpoint(IEntity* drone);
+        // void get_drone_startpoint(IEntity* drone);
         /**
          * @brief gets the startpoint of the package and logs it in package_startpoints
          * @param package the package we are getting the startpoint of

@@ -89,6 +89,10 @@ void SimulationModel::scheduleTrip(JsonObject& details) {
     scheduledDeliveries.push_back(package);
     controller.sendEventToView("DeliveryScheduled", details);
   }
+
+  singleton->get_package_startpoint(*package);
+  singleton->get_endpoint(*package);
+  singleton->get_distances(*package);
 }
 
 const routing::IGraph* SimulationModel::getGraph() {
@@ -108,6 +112,10 @@ void SimulationModel::update(double dt) {
 }
 
 void SimulationModel::stop(void) {
+  singleton->get_strat_times();
+  singleton->get_package_times();
+  singleton->analyze_data();
+  singleton->export_to_csv();
   controller.stop();
 }
 
