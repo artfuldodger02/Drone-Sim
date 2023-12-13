@@ -98,7 +98,7 @@ class Singleton{
         ~Singleton();
 
         static Singleton* singleton_;
-        float drone_speed;
+        float drone_speed = 0.0;
 
         std::vector<Vector3> drone_startpoints;
         std::vector<Vector3> package_startpoints;
