@@ -34,9 +34,9 @@ class Singleton{
         /**
          * @brief gets the speed of the drone
          * @param drone the drone Entity we are getting the speed of
-         * @return float representing the speed
+         * @return double representing the speed
          */
-        float get_speed(IEntity* drone);
+        double get_speed(IEntity* drone);
 
         /**
          * @brief gets the startpoint of the drone and logs it in drone_startpoints
@@ -87,6 +87,8 @@ class Singleton{
          */
         void export_to_csv();
 
+        int endpoint_counter = 0;
+
     private:
         /**
          * @brief singleton constructor
@@ -98,29 +100,29 @@ class Singleton{
         ~Singleton();
 
         static Singleton* singleton_;
-        float drone_speed = 0.0;
+        double drone_speed = 0.0;
 
         std::vector<Vector3> drone_startpoints;
         std::vector<Vector3> package_startpoints;
         std::vector<Vector3> endpoints;
 
-        std::vector<float> astar_times;
+        std::vector<double> astar_times;
         std::vector<double> astar_distances;
 
-        std::vector<float> beeline_times;
+        std::vector<double> beeline_times;
         std::vector<double> beeline_distances;
 
-        std::vector<float> bfs_times;
+        std::vector<double> bfs_times;
         std::vector<double> bfs_distances;
 
-        std::vector<float> dfs_times;
+        std::vector<double> dfs_times;
         std::vector<double> dfs_distances;
 
-        std::vector<float> dijkstra_times;
+        std::vector<double> dijkstra_times;
         std::vector<double> dijkstra_distances;
 
-        std::vector<float> downtimes;
-        std::vector<float> package_times;
+        std::vector<double> downtimes;
+        std::vector<double> package_times;
         std::vector<std::string> package_strats;
         std::vector<double> package_distances;
 
@@ -128,23 +130,23 @@ class Singleton{
         // index 1: avg distance
         // index 2: avg time
 
-        std::vector<float> astar_details;
-        std::vector<float> beeline_details;
-        std::vector<float> dfs_details;
-        std::vector<float> bfs_details;
-        std::vector<float> dijkstra_details;
+        std::vector<double> astar_details;
+        std::vector<double> beeline_details;
+        std::vector<double> dfs_details;
+        std::vector<double> bfs_details;
+        std::vector<double> dijkstra_details;
 
-        float avg_astar_time;
-        float avg_beeline_time;
-        float avg_bfs_time;
-        float avg_dfs_time;
-        float avg_dijkstra_time;
+        double avg_astar_time;
+        double avg_beeline_time;
+        double avg_bfs_time;
+        double avg_dfs_time;
+        double avg_dijkstra_time;
 
-        float avg_astar_distance;
-        float avg_beeline_distance;
-        float avg_bfs_distance;
-        float avg_dfs_distance;
-        float avg_dijkstra_distance;
+        double avg_astar_distance;
+        double avg_beeline_distance;
+        double avg_bfs_distance;
+        double avg_dfs_distance;
+        double avg_dijkstra_distance;
 
 
 

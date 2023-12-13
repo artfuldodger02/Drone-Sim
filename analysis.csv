@@ -1,0 +1,10 @@
+Raw Data
+,Pickup, Dropoff, Time, Strategy, Downtime, Distance
+
+Analyzed Data
+, Average Speed, Average Distance, Average Crowfly time, Average Time
+Astar,30.000000,0.000000,0.000000
+BFS,30.000000,0.000000,0.000000
+DFS,30.000000,0.000000,0.000000
+Dijkstra,30.000000,0.000000,0.000000
+Beeline,30.000000,0.000000,0.000000

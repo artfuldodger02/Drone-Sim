@@ -113,10 +113,15 @@ void SimulationModel::update(double dt) {
 }
 
 void SimulationModel::stop(void) {
+  std::cout << "test 1\n";
   singleton->get_strat_times();
+  std::cout << "test 2\n";
   singleton->get_package_times();
+  std::cout << "test 3\n";
   singleton->analyze_data();
+  std::cout << "test 4\n";
   singleton->export_to_csv();
+  std::cout << "test 5\n";
   controller.stop();
 }
 
