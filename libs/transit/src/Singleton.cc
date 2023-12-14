@@ -65,7 +65,6 @@ void Singleton::get_distances(Package package){ //ask TA's on friday
 }
 
 void Singleton::get_strat_times(){
-  std::cout << "test 1a\n";
   double time = 0.0;
   // get astar times
   if(singleton_->astar_distances.size() > 0){
@@ -77,7 +76,6 @@ void Singleton::get_strat_times(){
   // get dfs times
   if(singleton_->dfs_distances.size() > 0){
     for(int i = 0; i < singleton_->dfs_distances.size(); i++){
-        std::cout << "test 1c\n";
         time = singleton_->dfs_distances[i] / singleton_->drone_speed;
         singleton_->dfs_times.push_back(time);
     }
@@ -85,7 +83,6 @@ void Singleton::get_strat_times(){
   // get bfs times
   if(singleton_->bfs_distances.size() > 0){
     for(int i = 0; i <singleton_->bfs_distances.size(); i++){
-        std::cout << "test 1d\n";
         time = singleton_->bfs_distances[i] / singleton_->drone_speed;
         singleton_->bfs_times.push_back(time);
     }
@@ -93,7 +90,6 @@ void Singleton::get_strat_times(){
   // get dijkstra times
   if(singleton_->dijkstra_distances.size() > 0){
     for(int i = 0; i < singleton_->dijkstra_distances.size(); i++){
-        std::cout << "test 1e\n";
         time = singleton_->dijkstra_distances[i] / singleton_->drone_speed;
         singleton_->dijkstra_times.push_back(time);
     }
@@ -101,7 +97,6 @@ void Singleton::get_strat_times(){
   // get beeline times
   if(singleton_->beeline_distances.size() > 0){
     for(int i = 0; i < singleton_->beeline_distances.size(); i++){
-        std::cout << "test 1f\n";
         time = singleton_->beeline_distances[i] / singleton_->drone_speed;
         singleton_->beeline_times.push_back(time);
     }    
@@ -149,7 +144,6 @@ void Singleton::analyze_data(){
   singleton_->avg_dfs_distance = 0.0;
   singleton_->avg_dijkstra_distance = 0.0;
 
-  std::cout << "test astar\n";
   // check to see if we have any astar times
   if(singleton_->astar_times.size() > 0){
     for (int i = 0; i < singleton_->astar_times.size(); i++) {
@@ -168,7 +162,6 @@ void Singleton::analyze_data(){
 
   // repeat above for each strat
   // beeline
-  std::cout << "test beeline\n";
   if(singleton_->beeline_times.size() > 0){
     for(int i = 0; i < singleton_->beeline_times.size(); i++){
         singleton_->avg_astar_time += singleton_->beeline_times[i];
@@ -182,7 +175,6 @@ void Singleton::analyze_data(){
   singleton_->beeline_details.push_back(singleton_->avg_beeline_time);
   
   // bfs
-  std::cout << "test bfs\n";
   if(singleton_->bfs_times.size() > 0){
     for(int i = 0; i < singleton_->bfs_times.size(); i++){
         singleton_->avg_bfs_time += singleton_->bfs_times[i];
@@ -196,7 +188,6 @@ void Singleton::analyze_data(){
   singleton_->bfs_details.push_back(singleton_->avg_bfs_time);
   
   // dfs
-  std::cout << "test dfs\n";
   if(singleton_->dfs_times.size() > 0){
     for(int i = 0; i < singleton_->dfs_times.size(); i++){
         singleton_->avg_dfs_time += singleton_->dfs_times[i];
@@ -210,11 +201,10 @@ void Singleton::analyze_data(){
   singleton_->dfs_details.push_back(singleton_->avg_dfs_time);
   
   //dijkstra
-  std::cout << "test dijkstra\n";
   if(singleton_->dijkstra_times.size() > 0){
     for(int i = 0; i < singleton_->dijkstra_times.size(); i++){
         singleton_->avg_dijkstra_time += singleton_->dijkstra_times[i];
-        singleton_->avg_dijkstra_time += singleton_->dijkstra_distances[i];
+        singleton_->avg_dijkstra_distance += singleton_->dijkstra_distances[i];
     }
     singleton_->avg_dijkstra_time = singleton_->avg_dijkstra_time / singleton_->dijkstra_times.size();
     singleton_->avg_dijkstra_distance = singleton_->avg_dijkstra_distance / singleton_->dijkstra_distances.size();
@@ -226,36 +216,26 @@ void Singleton::analyze_data(){
 }
 
 void Singleton::export_to_csv() {
-  std::cout << "test csv1\n";
-
   std::ofstream file;
   file.open("analysis.csv");
   file << "Raw Data\n";
-  file << ",Pickup, Dropoff, Time, Strategy, Downtime, Distance";
+  file << ",Pickup, Dropoff, Time, Strategy, Downtime, Distance\n";
 
-  std::cout << "test csv2\n";
   for (int i = 0; i < singleton_->package_startpoints.size(); i++) {
-    file << "package" + std::to_string(i) + ",";
-    std::cout << "test csv2a\n";
-    std::cout << i << '\n';
-    std::cout << singleton_->package_startpoints.size() << '\n';
-    std::cout << singleton_->endpoints.size() << '\n';
-    std::cout << singleton_->package_times.size() << '\n';
-    std::cout << singleton_->downtimes.size() << '\n';
-    std::cout << singleton_->package_distances.size() << '\n';
-    file << std::to_string(singleton_->package_startpoints.at(i)[0]) + "." +
-                std::to_string(singleton_->package_startpoints.at(i)[1]) + "." +
+    file << "package" + std::to_string(i) + ", ";
+    
+    file << std::to_string(singleton_->package_startpoints.at(i)[0]) + " . " +
+                std::to_string(singleton_->package_startpoints.at(i)[1]) + " . " +
                 std::to_string(singleton_->package_startpoints.at(i)[2]) + "," +
-                std::to_string(singleton_->endpoints.at(i)[0]) + "." +
-                std::to_string(singleton_->endpoints.at(i)[1]) + "." +
-                std::to_string(singleton_->endpoints.at(i)[2]) + "," +
-                std::to_string(singleton_->package_times.at(i)) + "," +
-                singleton_->package_strats.at(i) + "," +
-                std::to_string(singleton_->downtimes.at(i)) + "," +
-                std::to_string(singleton_->package_distances.at(i)) + ",\n";
-    std::cout << "test csv2b\n";
+                std::to_string(singleton_->endpoints.at(i)[0]) + " . " +
+                std::to_string(singleton_->endpoints.at(i)[1]) + " . " +
+                std::to_string(singleton_->endpoints.at(i)[2]) + ", " +
+                std::to_string(singleton_->package_times.at(i)) + ", " +
+                singleton_->package_strats.at(i) + ", " +
+                std::to_string(singleton_->downtimes.at(i)) + ", " +
+                std::to_string(singleton_->package_distances.at(i)) + ", \n";
   }
-  std::cout << "test csv3\n";
+
   file << "\n";
   file << "\n";
 
@@ -263,37 +243,27 @@ void Singleton::export_to_csv() {
   file << ", Average Speed, Average Distance, Average Crowfly time, Average "
           "Time\n";
 
-  file << "Astar," + std::to_string(singleton_->astar_details.at(0)) + "," +
-              std::to_string(singleton_->astar_details.at(1)) + "," +
+  file << "Astar, " + std::to_string(singleton_->astar_details.at(0)) + ", " +
+              std::to_string(singleton_->astar_details.at(1)) + ", " +
               std::to_string(singleton_->astar_details.at(2)) + "\n";
   
-  std::cout << "test csv4\n";
   
-  file << "BFS," + std::to_string(singleton_->bfs_details.at(0)) + "," +
-              std::to_string(singleton_->bfs_details.at(1)) + "," +
+  file << "BFS," + std::to_string(singleton_->bfs_details.at(0)) + ", " +
+              std::to_string(singleton_->bfs_details.at(1)) + ", " +
               std::to_string(singleton_->bfs_details.at(2)) + "\n";
   
-  std::cout << "test csv5\n";
   
-  file << "DFS," + std::to_string(singleton_->dfs_details.at(0)) + "," +
-              std::to_string(singleton_->dfs_details.at(1)) + "," +
+  file << "DFS," + std::to_string(singleton_->dfs_details.at(0)) + ", " +
+              std::to_string(singleton_->dfs_details.at(1)) + ", " +
               std::to_string(singleton_->dfs_details.at(2)) + "\n";
-  
-  std::cout << "test csv6\n";
-  
-  file << "Dijkstra," + std::to_string(singleton_->dijkstra_details.at(0)) + "," +
-              std::to_string(singleton_->dijkstra_details.at(1)) + "," +
+    
+  file << "Dijkstra," + std::to_string(singleton_->dijkstra_details.at(0)) + ", " +
+              std::to_string(singleton_->dijkstra_details.at(1)) + ", " +
               std::to_string(singleton_->dijkstra_details.at(2)) + "\n";
   
-  std::cout << "test csv7\n";
-  
-  file << "Beeline," + std::to_string(singleton_->beeline_details.at(0)) + "," +
-              std::to_string(singleton_->beeline_details.at(1)) + "," +
+  file << "Beeline," + std::to_string(singleton_->beeline_details.at(0)) + ", " +
+              std::to_string(singleton_->beeline_details.at(1)) + ", " +
               std::to_string(singleton_->beeline_details.at(2)) + "\n";
   
-  std::cout << "test csv8\n";
-  
   file.close();
-
-  std::cout << "test csv9\n";
 }
