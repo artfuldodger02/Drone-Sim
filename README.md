@@ -11,7 +11,7 @@
   Once prompted to close the program, the singleton then compiles this data together and performs analysis on the different search strategies used, determining the average distance traveled and the average time it took each strategy to complete
   
   
-  The analysis also lists the speed of each strategy, in case of future changes to the program where the drone speed becomes variable, as well as statistics for a beeline strategy, in case that is implemented as a default search strategy.
+  The analysis also lists the speed of each strategy, in case of future changes to the program where the drone speed becomes variable.
   
   
   The singleton then outputs this information as a CSV file for data collection and observation. 
