@@ -1,13 +1,13 @@
 #include "SimulationModel.h"
 
 #include "DroneFactory.h"
+#include "HelicopterFactory.h"
+#include "HumanFactory.h"
 #include "PackageFactory.h"
 #include "RobotFactory.h"
-#include "HumanFactory.h"
-#include "HelicopterFactory.h"
 #include "Singleton.h"
 
-SimulationModel::SimulationModel(IController& controller)
+SimulationModel::SimulationModel(IController &controller)
     : controller(controller) {
   entityFactory.AddFactory(new DroneFactory());
   entityFactory.AddFactory(new PackageFactory());
@@ -20,18 +20,18 @@ SimulationModel::SimulationModel(IController& controller)
 
 SimulationModel::~SimulationModel() {
   // Delete dynamically allocated variables
-  for (auto& [id, entity] : entities) {
+  for (auto &[id, entity] : entities) {
     delete entity;
   }
   delete graph;
 }
 
-IEntity* SimulationModel::createEntity(JsonObject& entity) {
+IEntity *SimulationModel::createEntity(JsonObject &entity) {
   std::string name = entity["name"];
   JsonArray position = entity["position"];
   std::cout << name << ": " << position << std::endl;
 
-  IEntity* myNewEntity = nullptr;
+  IEntity *myNewEntity = nullptr;
   if (myNewEntity = entityFactory.CreateEntity(entity)) {
     // Call AddEntity to add it to the view
     myNewEntity->linkModel(this);
@@ -39,30 +39,27 @@ IEntity* SimulationModel::createEntity(JsonObject& entity) {
     entities[myNewEntity->getId()] = myNewEntity;
   }
 
-
-  if( name == "Drone" || name == "drone" ){
+  if (name == "Drone" || name == "drone") {
     singleton->get_speed(myNewEntity);
   }
   return myNewEntity;
 }
 
-void SimulationModel::removeEntity(int id) {
-  removed.insert(id);
-}
+void SimulationModel::removeEntity(int id) { removed.insert(id); }
 
 /// Schedules a Delivery for an object in the scene
-void SimulationModel::scheduleTrip(JsonObject& details) {
+void SimulationModel::scheduleTrip(JsonObject &details) {
   std::string name = details["name"];
   JsonArray start = details["start"];
   JsonArray end = details["end"];
   std::cout << name << ": " << start << " --> " << end << std::endl;
 
-  Robot* receiver = nullptr;
+  Robot *receiver = nullptr;
 
-  for (auto& [id, entity] : entities) {
+  for (auto &[id, entity] : entities) {
     if (name == entity->getName()) {
-      if (Robot* r = dynamic_cast<Robot*>(entity)) {
-        if  (r->requestedDelivery) {
+      if (Robot *r = dynamic_cast<Robot *>(entity)) {
+        if (r->requestedDelivery) {
           receiver = r;
           break;
         }
@@ -70,12 +67,12 @@ void SimulationModel::scheduleTrip(JsonObject& details) {
     }
   }
 
-  Package* package = nullptr;
+  Package *package = nullptr;
 
-  for (auto& [id, entity] : entities) {
+  for (auto &[id, entity] : entities) {
     if (name + "_package" == entity->getName()) {
-      if (Package* p = dynamic_cast<Package*>(entity)) {
-        if  (p->requiresDelivery) {
+      if (Package *p = dynamic_cast<Package *>(entity)) {
+        if (p->requiresDelivery) {
           package = p;
           break;
         }
@@ -96,13 +93,11 @@ void SimulationModel::scheduleTrip(JsonObject& details) {
   singleton->get_distances(*package);
 }
 
-const routing::IGraph* SimulationModel::getGraph() {
-  return graph;
-}
+const routing::IGraph *SimulationModel::getGraph() { return graph; }
 
 /// Updates the simulation
 void SimulationModel::update(double dt) {
-  for (auto& [id, entity] : entities) {
+  for (auto &[id, entity] : entities) {
     entity->update(dt);
     controller.updateEntity(*entity);
   }
@@ -121,10 +116,10 @@ void SimulationModel::stop(void) {
 }
 
 void SimulationModel::removeFromSim(int id) {
-  IEntity* entity = entities[id];
+  IEntity *entity = entities[id];
   if (entity) {
-    for (auto i = scheduledDeliveries.begin();
-      i != scheduledDeliveries.end(); ++i) {
+    for (auto i = scheduledDeliveries.begin(); i != scheduledDeliveries.end();
+         ++i) {
       if (*i == entity) {
         scheduledDeliveries.erase(i);
         break;

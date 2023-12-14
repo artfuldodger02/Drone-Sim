@@ -13,7 +13,6 @@ Singleton::Singleton(const Singleton& other) = delete;
 
 Singleton& Singleton::operator=(const Singleton& other) = delete;
 
-
 Singleton* Singleton::get_instance() {
   if (singleton_ == nullptr) {
     singleton_ = new Singleton();
@@ -21,8 +20,7 @@ Singleton* Singleton::get_instance() {
   return singleton_;
 }
 
-
-double Singleton::get_speed(IEntity* drone){
+double Singleton::get_speed(IEntity* drone) {
   singleton_->drone_speed = drone->getSpeed();
   return drone->getSpeed();
 }
@@ -31,16 +29,16 @@ double Singleton::get_speed(IEntity* drone){
 //     drone_startpoints.push_back(drone->getPosition());
 // }
 
-void Singleton::get_package_startpoint(Package package){
+void Singleton::get_package_startpoint(Package package) {
   singleton_->package_startpoints.push_back(package.getPosition());
 }
 
-void Singleton::get_endpoint(Package package){
+void Singleton::get_endpoint(Package package) {
   singleton_->endpoints.push_back(package.getDestination());
   singleton_->endpoint_counter += 1;
 }
 
-void Singleton::get_distances(Package package){ //ask TA's on friday
+void Singleton::get_distances(Package package) {  // ask TA's on friday
   std::string strat = package.getStrategyName();
   singleton_->package_strats.push_back(
       strat);  // quick add the strat to the appropriate array
@@ -53,68 +51,66 @@ void Singleton::get_distances(Package package){ //ask TA's on friday
 
   if (strat == "astar") {
     singleton_->astar_distances.push_back(distance);
-    } else if (strat == "dfs") {
-        singleton_->dfs_distances.push_back(distance);
-    } else if (strat == "bfs") {
-        singleton_->bfs_distances.push_back(distance);
-    } else if (strat == "dijkstra") {
-        singleton_->dijkstra_distances.push_back(distance);
-    } else { //beeline
-        singleton_->beeline_distances.push_back(distance);
-    }   
+  } else if (strat == "dfs") {
+    singleton_->dfs_distances.push_back(distance);
+  } else if (strat == "bfs") {
+    singleton_->bfs_distances.push_back(distance);
+  } else if (strat == "dijkstra") {
+    singleton_->dijkstra_distances.push_back(distance);
+  } else {  // beeline
+    singleton_->beeline_distances.push_back(distance);
+  }
 }
 
-void Singleton::get_strat_times(){
+void Singleton::get_strat_times() {
   double time = 0.0;
   // get astar times
-  if(singleton_->astar_distances.size() > 0){
+  if (singleton_->astar_distances.size() > 0) {
     for (int i = 0; i < singleton_->astar_distances.size(); i++) {
       time = singleton_->astar_distances[i] / singleton_->drone_speed;
       singleton_->astar_times.push_back(time);
-      }
+    }
   }
   // get dfs times
-  if(singleton_->dfs_distances.size() > 0){
-    for(int i = 0; i < singleton_->dfs_distances.size(); i++){
-        time = singleton_->dfs_distances[i] / singleton_->drone_speed;
-        singleton_->dfs_times.push_back(time);
+  if (singleton_->dfs_distances.size() > 0) {
+    for (int i = 0; i < singleton_->dfs_distances.size(); i++) {
+      time = singleton_->dfs_distances[i] / singleton_->drone_speed;
+      singleton_->dfs_times.push_back(time);
     }
   }
   // get bfs times
-  if(singleton_->bfs_distances.size() > 0){
-    for(int i = 0; i <singleton_->bfs_distances.size(); i++){
-        time = singleton_->bfs_distances[i] / singleton_->drone_speed;
-        singleton_->bfs_times.push_back(time);
+  if (singleton_->bfs_distances.size() > 0) {
+    for (int i = 0; i < singleton_->bfs_distances.size(); i++) {
+      time = singleton_->bfs_distances[i] / singleton_->drone_speed;
+      singleton_->bfs_times.push_back(time);
     }
   }
   // get dijkstra times
-  if(singleton_->dijkstra_distances.size() > 0){
-    for(int i = 0; i < singleton_->dijkstra_distances.size(); i++){
-        time = singleton_->dijkstra_distances[i] / singleton_->drone_speed;
-        singleton_->dijkstra_times.push_back(time);
+  if (singleton_->dijkstra_distances.size() > 0) {
+    for (int i = 0; i < singleton_->dijkstra_distances.size(); i++) {
+      time = singleton_->dijkstra_distances[i] / singleton_->drone_speed;
+      singleton_->dijkstra_times.push_back(time);
     }
   }
   // get beeline times
-  if(singleton_->beeline_distances.size() > 0){
-    for(int i = 0; i < singleton_->beeline_distances.size(); i++){
-        time = singleton_->beeline_distances[i] / singleton_->drone_speed;
-        singleton_->beeline_times.push_back(time);
-    }    
+  if (singleton_->beeline_distances.size() > 0) {
+    for (int i = 0; i < singleton_->beeline_distances.size(); i++) {
+      time = singleton_->beeline_distances[i] / singleton_->drone_speed;
+      singleton_->beeline_times.push_back(time);
+    }
   }
 }
 
-void Singleton::get_package_times(){
+void Singleton::get_package_times() {
   double time = 0.0;
   for (int i = 0; i < singleton_->package_distances.size(); i++) {
     time = singleton_->package_distances[i] / singleton_->drone_speed;
     singleton_->package_times.push_back(time);
-    }
+  }
 }
 
-void Singleton::get_downtime(Package package){
-
+void Singleton::get_downtime(Package package) {
   if (singleton_->endpoint_counter >= 1) {
-
     Vector3 drone_pos = singleton_->endpoints[singleton_->endpoint_counter - 1];
 
     Vector3 package_pos = package.getPosition();
@@ -124,20 +120,20 @@ void Singleton::get_downtime(Package package){
     double dtime = distance / singleton_->drone_speed;
 
     singleton_->downtimes.push_back(dtime);
-    
-    }else{ // add a 0 to the front, so downtimes can be the same size as everything else
-      singleton_->downtimes.push_back(0.0);
-    }
+
+  } else {  // add a 0 to the front, so downtimes can be the same size as
+            // everything else
+    singleton_->downtimes.push_back(0.0);
+  }
 }
 
-void Singleton::analyze_data(){
-
+void Singleton::analyze_data() {
   singleton_->avg_astar_time = 0.0;
   singleton_->avg_beeline_time = 0.0;
   singleton_->avg_bfs_time = 0.0;
   singleton_->avg_dfs_time = 0.0;
   singleton_->avg_dijkstra_time = 0.0;
-  
+
   singleton_->avg_astar_distance = 0.0;
   singleton_->avg_beeline_distance = 0;
   singleton_->avg_bfs_distance = 0.0;
@@ -145,14 +141,16 @@ void Singleton::analyze_data(){
   singleton_->avg_dijkstra_distance = 0.0;
 
   // check to see if we have any astar times
-  if(singleton_->astar_times.size() > 0){
+  if (singleton_->astar_times.size() > 0) {
     for (int i = 0; i < singleton_->astar_times.size(); i++) {
       singleton_->avg_astar_time += singleton_->astar_times[i];
       singleton_->avg_astar_distance += singleton_->astar_distances[i];
     }
     // if we do, calculate averages
-    singleton_->avg_astar_time = singleton_->avg_astar_time / singleton_->astar_times.size();
-    singleton_->avg_astar_distance = singleton_->avg_astar_distance / singleton_->astar_distances.size();
+    singleton_->avg_astar_time =
+        singleton_->avg_astar_time / singleton_->astar_times.size();
+    singleton_->avg_astar_distance =
+        singleton_->avg_astar_distance / singleton_->astar_distances.size();
   }
   // assign details
   // if there is no entries in astar, it'll default to 0
@@ -162,57 +160,64 @@ void Singleton::analyze_data(){
 
   // repeat above for each strat
   // beeline
-  if(singleton_->beeline_times.size() > 0){
-    for(int i = 0; i < singleton_->beeline_times.size(); i++){
-        singleton_->avg_astar_time += singleton_->beeline_times[i];
-        singleton_->avg_beeline_distance += singleton_->beeline_distances[i];
+  if (singleton_->beeline_times.size() > 0) {
+    for (int i = 0; i < singleton_->beeline_times.size(); i++) {
+      singleton_->avg_astar_time += singleton_->beeline_times[i];
+      singleton_->avg_beeline_distance += singleton_->beeline_distances[i];
     }
-    singleton_->avg_beeline_time = singleton_->avg_beeline_time / singleton_->beeline_times.size();
-    singleton_->avg_beeline_distance = singleton_->avg_beeline_distance / singleton_->beeline_distances.size();
+    singleton_->avg_beeline_time =
+        singleton_->avg_beeline_time / singleton_->beeline_times.size();
+    singleton_->avg_beeline_distance =
+        singleton_->avg_beeline_distance / singleton_->beeline_distances.size();
   }
   singleton_->beeline_details.push_back(singleton_->drone_speed);
   singleton_->beeline_details.push_back(singleton_->avg_beeline_distance);
   singleton_->beeline_details.push_back(singleton_->avg_beeline_time);
-  
+
   // bfs
-  if(singleton_->bfs_times.size() > 0){
-    for(int i = 0; i < singleton_->bfs_times.size(); i++){
-        singleton_->avg_bfs_time += singleton_->bfs_times[i];
-        singleton_->avg_bfs_distance += singleton_->bfs_distances[i];
+  if (singleton_->bfs_times.size() > 0) {
+    for (int i = 0; i < singleton_->bfs_times.size(); i++) {
+      singleton_->avg_bfs_time += singleton_->bfs_times[i];
+      singleton_->avg_bfs_distance += singleton_->bfs_distances[i];
     }
-    singleton_->avg_bfs_time = singleton_->avg_bfs_time / singleton_->bfs_times.size();
-    singleton_->avg_bfs_distance = singleton_->avg_bfs_distance / singleton_->bfs_distances.size();
+    singleton_->avg_bfs_time =
+        singleton_->avg_bfs_time / singleton_->bfs_times.size();
+    singleton_->avg_bfs_distance =
+        singleton_->avg_bfs_distance / singleton_->bfs_distances.size();
   }
   singleton_->bfs_details.push_back(singleton_->drone_speed);
   singleton_->bfs_details.push_back(singleton_->avg_bfs_distance);
   singleton_->bfs_details.push_back(singleton_->avg_bfs_time);
-  
+
   // dfs
-  if(singleton_->dfs_times.size() > 0){
-    for(int i = 0; i < singleton_->dfs_times.size(); i++){
-        singleton_->avg_dfs_time += singleton_->dfs_times[i];
-        singleton_->avg_dfs_distance += singleton_->dfs_distances[i];
+  if (singleton_->dfs_times.size() > 0) {
+    for (int i = 0; i < singleton_->dfs_times.size(); i++) {
+      singleton_->avg_dfs_time += singleton_->dfs_times[i];
+      singleton_->avg_dfs_distance += singleton_->dfs_distances[i];
     }
-    singleton_->avg_dfs_time = singleton_->avg_dfs_time / singleton_->dfs_times.size();
-    singleton_->avg_dfs_distance = singleton_->avg_dfs_distance / singleton_->dfs_distances.size();
+    singleton_->avg_dfs_time =
+        singleton_->avg_dfs_time / singleton_->dfs_times.size();
+    singleton_->avg_dfs_distance =
+        singleton_->avg_dfs_distance / singleton_->dfs_distances.size();
   }
   singleton_->dfs_details.push_back(singleton_->drone_speed);
   singleton_->dfs_details.push_back(singleton_->avg_dfs_distance);
   singleton_->dfs_details.push_back(singleton_->avg_dfs_time);
-  
-  //dijkstra
-  if(singleton_->dijkstra_times.size() > 0){
-    for(int i = 0; i < singleton_->dijkstra_times.size(); i++){
-        singleton_->avg_dijkstra_time += singleton_->dijkstra_times[i];
-        singleton_->avg_dijkstra_distance += singleton_->dijkstra_distances[i];
+
+  // dijkstra
+  if (singleton_->dijkstra_times.size() > 0) {
+    for (int i = 0; i < singleton_->dijkstra_times.size(); i++) {
+      singleton_->avg_dijkstra_time += singleton_->dijkstra_times[i];
+      singleton_->avg_dijkstra_distance += singleton_->dijkstra_distances[i];
     }
-    singleton_->avg_dijkstra_time = singleton_->avg_dijkstra_time / singleton_->dijkstra_times.size();
-    singleton_->avg_dijkstra_distance = singleton_->avg_dijkstra_distance / singleton_->dijkstra_distances.size();
+    singleton_->avg_dijkstra_time =
+        singleton_->avg_dijkstra_time / singleton_->dijkstra_times.size();
+    singleton_->avg_dijkstra_distance = singleton_->avg_dijkstra_distance /
+                                        singleton_->dijkstra_distances.size();
   }
   singleton_->dijkstra_details.push_back(singleton_->drone_speed);
   singleton_->dijkstra_details.push_back(singleton_->avg_dijkstra_distance);
   singleton_->dijkstra_details.push_back(singleton_->avg_dijkstra_time);
-  
 }
 
 void Singleton::export_to_csv() {
@@ -223,9 +228,10 @@ void Singleton::export_to_csv() {
 
   for (int i = 0; i < singleton_->package_startpoints.size(); i++) {
     file << "package" + std::to_string(i) + ", ";
-    
+
     file << std::to_string(singleton_->package_startpoints.at(i)[0]) + " . " +
-                std::to_string(singleton_->package_startpoints.at(i)[1]) + " . " +
+                std::to_string(singleton_->package_startpoints.at(i)[1]) +
+                " . " +
                 std::to_string(singleton_->package_startpoints.at(i)[2]) + "," +
                 std::to_string(singleton_->endpoints.at(i)[0]) + " . " +
                 std::to_string(singleton_->endpoints.at(i)[1]) + " . " +
@@ -246,24 +252,22 @@ void Singleton::export_to_csv() {
   file << "Astar, " + std::to_string(singleton_->astar_details.at(0)) + ", " +
               std::to_string(singleton_->astar_details.at(1)) + ", " +
               std::to_string(singleton_->astar_details.at(2)) + "\n";
-  
-  
+
   file << "BFS," + std::to_string(singleton_->bfs_details.at(0)) + ", " +
               std::to_string(singleton_->bfs_details.at(1)) + ", " +
               std::to_string(singleton_->bfs_details.at(2)) + "\n";
-  
-  
+
   file << "DFS," + std::to_string(singleton_->dfs_details.at(0)) + ", " +
               std::to_string(singleton_->dfs_details.at(1)) + ", " +
               std::to_string(singleton_->dfs_details.at(2)) + "\n";
-    
-  file << "Dijkstra," + std::to_string(singleton_->dijkstra_details.at(0)) + ", " +
-              std::to_string(singleton_->dijkstra_details.at(1)) + ", " +
+
+  file << "Dijkstra," + std::to_string(singleton_->dijkstra_details.at(0)) +
+              ", " + std::to_string(singleton_->dijkstra_details.at(1)) + ", " +
               std::to_string(singleton_->dijkstra_details.at(2)) + "\n";
-  
-  file << "Beeline," + std::to_string(singleton_->beeline_details.at(0)) + ", " +
-              std::to_string(singleton_->beeline_details.at(1)) + ", " +
+
+  file << "Beeline," + std::to_string(singleton_->beeline_details.at(0)) +
+              ", " + std::to_string(singleton_->beeline_details.at(1)) + ", " +
               std::to_string(singleton_->beeline_details.at(2)) + "\n";
-  
+
   file.close();
 }
