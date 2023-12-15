@@ -30,7 +30,6 @@ class Drone : public IEntity {
    */
   ~Drone();
 
-
   /**
    * @brief Gets the next delivery in the scheduler
    */

@@ -5,7 +5,6 @@
 
 #include "Drone.h"
 #include "Package.h"
-#include "SimulationModel.h"
 #include "graph.h"
 #include "math/vector3.h"
 #include "routing/astar.h"
@@ -94,15 +93,6 @@ class Singleton {
    * of the program
    */
   void export_to_csv();
-  /**
-   * @brief calculate the distance between two points
-   * @param start a vector of flaots that represent the start coordinate
-   * @param end a vector of floats that represents the end coordinates
-   * @return a double value representing the distance between the two points
-  */
-  double distance_formula(std::vector<float> start, std::vector<float> end);
-
-  int endpoint_counter = 0;
 
  private:
   /**
@@ -113,9 +103,17 @@ class Singleton {
    * @brief singleton deconstructor
    */
   ~Singleton();
+  /**
+   * @brief calculate the distance between two points
+   * @param start a vector of flaots that represent the start coordinate
+   * @param end a vector of floats that represents the end coordinates
+   * @return a double value representing the distance between the two points
+   */
+  double distance_formula(std::vector<float> start, std::vector<float> end);
 
   static Singleton* singleton_;
   double drone_speed = 0.0;
+  int endpoint_counter = 0;
 
   std::vector<Vector3> drone_startpoints;
   std::vector<Vector3> package_startpoints;

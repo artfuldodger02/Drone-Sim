@@ -25,10 +25,6 @@ double Singleton::get_speed(IEntity* drone) {
   return drone->getSpeed();
 }
 
-// void Singleton::get_drone_startpoint(IEntity* drone){
-//     drone_startpoints.push_back(drone->getPosition());
-// }
-
 void Singleton::get_package_startpoint(Package package) {
   singleton_->package_startpoints.push_back(package.getPosition());
 }
@@ -66,7 +62,7 @@ void Singleton::get_distances(Package package, const routing::IGraph* graph) {
       distance += distance_formula(path.at(i), path.at(i + 1));
     }
     singleton_->astar_distances.push_back(distance);
-    // singleton_->package_distances.push_back(distance);
+
   } else if (strat == "dfs") {
     path = graph->GetPath(vStartpoint, vEndpoint,
                           routing::DepthFirstSearch::Default());
@@ -74,7 +70,7 @@ void Singleton::get_distances(Package package, const routing::IGraph* graph) {
       distance += distance_formula(path.at(i), path.at(i + 1));
     }
     singleton_->dfs_distances.push_back(distance);
-    // singleton_->package_distances.push_back(distance);
+
   } else if (strat == "bfs") {
     path = graph->GetPath(vStartpoint, vEndpoint,
                           routing::BreadthFirstSearch::Default());
@@ -82,7 +78,7 @@ void Singleton::get_distances(Package package, const routing::IGraph* graph) {
       distance += distance_formula(path.at(i), path.at(i + 1));
     }
     singleton_->bfs_distances.push_back(distance);
-    // singleton_->package_distances.push_back(distance);
+
   } else {  // dijkstra
     path =
         graph->GetPath(vStartpoint, vEndpoint, routing::Dijkstra::Instance());
@@ -90,15 +86,12 @@ void Singleton::get_distances(Package package, const routing::IGraph* graph) {
       distance += distance_formula(path.at(i), path.at(i + 1));
     }
     singleton_->dijkstra_distances.push_back(distance);
-    // singleton_->package_distances.push_back(distance);
   }
   singleton_->package_distances.push_back(distance);
 }
 
-// singleton_->package_distances.push_back(
-//     distance);  // quick add the distance to the appropriate array
-
-double Singleton::distance_formula(std::vector<float> start, std::vector<float> end) {
+double Singleton::distance_formula(std::vector<float> start,
+                                   std::vector<float> end) {
   std::vector<double> x = {static_cast<double>(start.at(0)),
                            static_cast<double>(start.at(1)),
                            static_cast<double>(start.at(2))};
@@ -173,7 +166,7 @@ void Singleton::get_downtime(Package package) {
 
   } else {  // add a 0 to the front, so downtimes can be the same size as
             // everything else
-    
+
     singleton_->downtimes.push_back(0.0);
   }
 }

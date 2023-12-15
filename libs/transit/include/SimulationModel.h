@@ -11,6 +11,7 @@
 #include "IEntity.h"
 #include "Robot.h"
 #include "graph.h"
+#include "Singleton.h"
 
 //--------------------  Model ----------------------------
 
@@ -21,7 +22,6 @@
  * communicate with the controller
  **/
 
-class Singleton;
 
 class SimulationModel {
  public:
