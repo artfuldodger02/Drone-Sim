@@ -68,6 +68,12 @@ class SimulationModel {
    **/
   void update(double dt);
 
+ /**
+   * @brief Analyzes the data and produces a csv file without stopping the sim
+   * @return Void
+   **/
+  void produceData();
+
   /**
    * @brief Stops the simulation
    * @return Void

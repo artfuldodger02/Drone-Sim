@@ -107,6 +107,13 @@ void SimulationModel::update(double dt) {
   removed.clear();
 }
 
+void SimulationModel::produceData(void){
+  singleton->get_strat_times();
+  singleton->get_package_times();
+  singleton->analyze_data();
+  singleton->export_to_csv();
+}
+
 void SimulationModel::stop(void) {
   singleton->get_strat_times();
   singleton->get_package_times();

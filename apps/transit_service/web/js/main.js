@@ -350,6 +350,11 @@ function stopSimulation()
   api.sendCommand("stopSimulation",{test:"test"});
 }
 
+function produceData()
+{
+  api.sendCommand("produceData",{test:"test"});
+}
+
 function toggleRoutes() {
   showRoutes = !showRoutes;
   for (var routeNum = 0; routeNum < routes.length; routeNum++) {
