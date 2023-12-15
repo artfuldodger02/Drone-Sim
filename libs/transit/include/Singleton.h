@@ -5,7 +5,13 @@
 
 #include "Drone.h"
 #include "Package.h"
+#include "SimulationModel.h"
+#include "graph.h"
 #include "math/vector3.h"
+#include "routing/astar.h"
+#include "routing/breadth_first_search.h"
+#include "routing/depth_first_search.h"
+#include "routing/dijkstra.h"
 
 /**
  * @class Singleton
@@ -60,7 +66,7 @@ class Singleton {
    * the appropriate strategy_distance variables
    * @param package the package we get the strat name from
    */
-  void get_distances(Package package);
+  void get_distances(Package package, const routing::IGraph* graph);
   /**
    * @brief gets the time it takes for a strategy to complete and logs it in
    * the appropriate strategy_time variable
@@ -88,6 +94,13 @@ class Singleton {
    * of the program
    */
   void export_to_csv();
+  /**
+   * @brief calculate the distance between two points
+   * @param start a vector of flaots that represent the start coordinate
+   * @param end a vector of floats that represents the end coordinates
+   * @return a double value representing the distance between the two points
+  */
+  double distance_formula(std::vector<float> start, std::vector<float> end);
 
   int endpoint_counter = 0;
 

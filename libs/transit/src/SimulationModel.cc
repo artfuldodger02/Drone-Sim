@@ -90,7 +90,7 @@ void SimulationModel::scheduleTrip(JsonObject &details) {
   singleton->get_downtime(*package);
   singleton->get_package_startpoint(*package);
   singleton->get_endpoint(*package);
-  singleton->get_distances(*package);
+  singleton->get_distances(*package, getGraph());
 }
 
 const routing::IGraph *SimulationModel::getGraph() { return graph; }

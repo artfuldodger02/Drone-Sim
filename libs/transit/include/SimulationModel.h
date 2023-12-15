@@ -10,7 +10,6 @@
 #include "IController.h"
 #include "IEntity.h"
 #include "Robot.h"
-#include "Singleton.h"
 #include "graph.h"
 
 //--------------------  Model ----------------------------
@@ -21,6 +20,9 @@
  * @brief Class SimulationModel handling the transit simulation. it can
  * communicate with the controller
  **/
+
+class Singleton;
+
 class SimulationModel {
  public:
   /**
