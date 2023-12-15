@@ -27,7 +27,7 @@ class IEntity {
 
   /**
    * @brief Constructor with JsonObject details to define the entity
-  */
+   */
   IEntity(JsonObject& details);
 
   /**

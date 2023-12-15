@@ -6,18 +6,15 @@
 
 #include "AstarStrategy.h"
 #include "BeelineStrategy.h"
-#include "DfsStrategy.h"
 #include "BfsStrategy.h"
+#include "DfsStrategy.h"
 #include "DijkstraStrategy.h"
 #include "JumpDecorator.h"
-#include "SpinDecorator.h"
-
 #include "Package.h"
 #include "SimulationModel.h"
+#include "SpinDecorator.h"
 
-Drone::Drone(JsonObject& obj) : IEntity(obj) {
-  available = true;
-}
+Drone::Drone(JsonObject& obj) : IEntity(obj) { available = true; }
 
 Drone::~Drone() {
   if (toPackage) delete toPackage;
@@ -40,48 +37,30 @@ void Drone::getNextDelivery() {
 
       std::string strat = package->getStrategyName();
       if (strat == "astar") {
-        toFinalDestination =
-          new JumpDecorator(
-            new AstarStrategy(
-              packagePosition,
-              finalDestination,
-              model->getGraph()));
+        toFinalDestination = new JumpDecorator(new AstarStrategy(
+            packagePosition, finalDestination, model->getGraph()));
       } else if (strat == "dfs") {
         toFinalDestination =
-          new SpinDecorator(
-            new JumpDecorator(
-              new DfsStrategy(
-                packagePosition,
-                finalDestination,
-                model->getGraph())));
+            new SpinDecorator(new JumpDecorator(new DfsStrategy(
+                packagePosition, finalDestination, model->getGraph())));
       } else if (strat == "bfs") {
         toFinalDestination =
-          new SpinDecorator(
-            new SpinDecorator(
-              new BfsStrategy(
-                packagePosition,
-                finalDestination,
-                model->getGraph())));
+            new SpinDecorator(new SpinDecorator(new BfsStrategy(
+                packagePosition, finalDestination, model->getGraph())));
       } else if (strat == "dijkstra") {
         toFinalDestination =
-          new JumpDecorator(
-            new SpinDecorator(
-              new DijkstraStrategy(
-                packagePosition,
-                finalDestination,
-                model->getGraph())));
+            new JumpDecorator(new SpinDecorator(new DijkstraStrategy(
+                packagePosition, finalDestination, model->getGraph())));
       } else {
-        toFinalDestination = new BeelineStrategy(
-          packagePosition,
-          finalDestination);
+        toFinalDestination =
+            new BeelineStrategy(packagePosition, finalDestination);
       }
     }
   }
 }
 
 void Drone::update(double dt) {
-  if (available)
-    getNextDelivery();
+  if (available) getNextDelivery();
 
   if (toPackage) {
     toPackage->move(this, dt);

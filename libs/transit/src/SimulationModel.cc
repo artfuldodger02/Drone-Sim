@@ -5,7 +5,6 @@
 #include "HumanFactory.h"
 #include "PackageFactory.h"
 #include "RobotFactory.h"
-#include "Singleton.h"
 
 SimulationModel::SimulationModel(IController &controller)
     : controller(controller) {
@@ -104,10 +103,11 @@ void SimulationModel::update(double dt) {
   for (int id : removed) {
     removeFromSim(id);
   }
+
   removed.clear();
 }
 
-void SimulationModel::produceData(void){
+void SimulationModel::produceData(void) {
   singleton->get_strat_times();
   singleton->get_package_times();
   singleton->analyze_data();
