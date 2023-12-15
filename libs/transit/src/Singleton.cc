@@ -38,28 +38,78 @@ void Singleton::get_endpoint(Package package) {
   singleton_->endpoint_counter += 1;
 }
 
-void Singleton::get_distances(Package package) {  // ask TA's on friday
+void Singleton::get_distances(Package package, const routing::IGraph* graph) {
   std::string strat = package.getStrategyName();
   singleton_->package_strats.push_back(
       strat);  // quick add the strat to the appropriate array
 
+  // Claculating beeline distances
   Vector3 startpoint = package.getPosition();
   Vector3 endpoint = package.getDestination();
-  double distance = startpoint.dist(endpoint);
-  singleton_->package_distances.push_back(
-      distance);  // quick add the distance to the appropriate array
+  double beelinedistance = startpoint.dist(endpoint);
+  singleton_->beeline_distances.push_back(beelinedistance);
+
+  std::vector<float> vStartpoint = {static_cast<float>(startpoint[0]),
+                                    static_cast<float>(startpoint[1]),
+                                    static_cast<float>(startpoint[2])};
+
+  std::vector<float> vEndpoint = {static_cast<float>(endpoint[0]),
+                                  static_cast<float>(endpoint[1]),
+                                  static_cast<float>(endpoint[2])};
+
+  double distance = 0.0;
+  std::vector<std::vector<float>> path;
 
   if (strat == "astar") {
+    path = graph->GetPath(vStartpoint, vEndpoint, routing::AStar::Default());
+    for (int i = 0; i < path.size() - 1; i++) {
+      distance += distance_formula(path.at(i), path.at(i + 1));
+    }
     singleton_->astar_distances.push_back(distance);
+    // singleton_->package_distances.push_back(distance);
   } else if (strat == "dfs") {
+    path = graph->GetPath(vStartpoint, vEndpoint,
+                          routing::DepthFirstSearch::Default());
+    for (int i = 0; i < path.size() - 1; i++) {
+      distance += distance_formula(path.at(i), path.at(i + 1));
+    }
     singleton_->dfs_distances.push_back(distance);
+    // singleton_->package_distances.push_back(distance);
   } else if (strat == "bfs") {
+    path = graph->GetPath(vStartpoint, vEndpoint,
+                          routing::BreadthFirstSearch::Default());
+    for (int i = 0; i < path.size() - 1; i++) {
+      distance += distance_formula(path.at(i), path.at(i + 1));
+    }
     singleton_->bfs_distances.push_back(distance);
-  } else if (strat == "dijkstra") {
+    // singleton_->package_distances.push_back(distance);
+  } else {  // dijkstra
+    path =
+        graph->GetPath(vStartpoint, vEndpoint, routing::Dijkstra::Instance());
+    for (int i = 0; i < path.size() - 1; i++) {
+      distance += distance_formula(path.at(i), path.at(i + 1));
+    }
     singleton_->dijkstra_distances.push_back(distance);
-  } else {  // beeline
-    singleton_->beeline_distances.push_back(distance);
+    // singleton_->package_distances.push_back(distance);
   }
+  singleton_->package_distances.push_back(distance);
+}
+
+// singleton_->package_distances.push_back(
+//     distance);  // quick add the distance to the appropriate array
+
+double Singleton::distance_formula(std::vector<float> start, std::vector<float> end) {
+  std::vector<double> x = {static_cast<double>(start.at(0)),
+                           static_cast<double>(start.at(1)),
+                           static_cast<double>(start.at(2))};
+  std::vector<double> y = {static_cast<double>(end.at(0)),
+                           static_cast<double>(end.at(1)),
+                           static_cast<double>(end.at(2))};
+
+  double d = std::sqrt(std::pow(end.at(0) - start.at(0), 2) +
+                       std::pow(end.at(1) - start.at(0), 2));
+
+  return d;
 }
 
 void Singleton::get_strat_times() {
@@ -123,6 +173,7 @@ void Singleton::get_downtime(Package package) {
 
   } else {  // add a 0 to the front, so downtimes can be the same size as
             // everything else
+    
     singleton_->downtimes.push_back(0.0);
   }
 }
@@ -162,7 +213,7 @@ void Singleton::analyze_data() {
   // beeline
   if (singleton_->beeline_times.size() > 0) {
     for (int i = 0; i < singleton_->beeline_times.size(); i++) {
-      singleton_->avg_astar_time += singleton_->beeline_times[i];
+      singleton_->avg_beeline_time += singleton_->beeline_times[i];
       singleton_->avg_beeline_distance += singleton_->beeline_distances[i];
     }
     singleton_->avg_beeline_time =
@@ -224,16 +275,16 @@ void Singleton::export_to_csv() {
   std::ofstream file;
   file.open("analysis.csv");
   file << "Raw Data\n";
-  file << ",Pickup, Dropoff, Time, Strategy, Downtime, Distance\n";
+  file << "Packages, Pickup, Dropoff, Time, Strategy, Downtime, Distance\n";
 
   for (int i = 0; i < singleton_->package_startpoints.size(); i++) {
-    file << "package" + std::to_string(i) + ", ";
+    file << "package " + std::to_string(i) + ", ";
 
     file << std::to_string(singleton_->package_startpoints.at(i)[0]) + " . " +
                 std::to_string(singleton_->package_startpoints.at(i)[1]) +
                 " . " +
-                std::to_string(singleton_->package_startpoints.at(i)[2]) + "," +
-                std::to_string(singleton_->endpoints.at(i)[0]) + " . " +
+                std::to_string(singleton_->package_startpoints.at(i)[2]) +
+                ", " + std::to_string(singleton_->endpoints.at(i)[0]) + " . " +
                 std::to_string(singleton_->endpoints.at(i)[1]) + " . " +
                 std::to_string(singleton_->endpoints.at(i)[2]) + ", " +
                 std::to_string(singleton_->package_times.at(i)) + ", " +
@@ -246,7 +297,7 @@ void Singleton::export_to_csv() {
   file << "\n";
 
   file << "Analyzed Data\n";
-  file << ", Average Speed, Average Distance, Average Crowfly time, Average "
+  file << "Strategies, Average Speed, Average Distance, Average "
           "Time\n";
 
   file << "Astar, " + std::to_string(singleton_->astar_details.at(0)) + ", " +

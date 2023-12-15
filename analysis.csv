@@ -1,11 +1,13 @@
 Raw Data
-,Pickup, Dropoff, Time, Strategy, Downtime, Distance
+Packages, Pickup, Dropoff, Time, Strategy, Downtime, Distance
+package 0, 725.859589 . 254.665000 . -410.697044, 762.072400 . 254.665000 . -97.427470, 277.729727, astar, 0.000000, 8331.891819, 
+package 1, 725.859589 . 254.665000 . -413.571076, 762.072400 . 254.665000 . -97.427470, 276.389432, bfs, 10.607028, 8291.682957, 
 
 
 Analyzed Data
-, Average Speed, Average Distance, Average Crowfly time, Average Time
-Astar, 30.000000, 0.000000, 0.000000
-BFS,30.000000, 0.000000, 0.000000
+Strategies, Average Speed, Average Distance, Average Time
+Astar, 30.000000, 8331.891819, 277.729727
+BFS,30.000000, 8291.682957, 276.389432
 DFS,30.000000, 0.000000, 0.000000
 Dijkstra,30.000000, 0.000000, 0.000000
-Beeline,30.000000, 0.000000, 0.000000
+Beeline,30.000000, 316.783258, 10.559442
