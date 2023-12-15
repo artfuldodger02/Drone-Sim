@@ -57,6 +57,11 @@ public:
             std::cout << "Stop command administered\n";
             model.stop();
         }
+        else if (cmd == "produceData")
+        {
+            std::cout << "Producing CSV Data File\n";
+            model.produceData();
+        }
     }
 
     void sendEntity(const std::string& event, const IEntity& entity, bool includeDetails = true) {

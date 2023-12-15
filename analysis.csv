@@ -1,5 +1,6 @@
 Raw Data
 ,Pickup, Dropoff, Time, Strategy, Downtime, Distance
+package0, -4.432101 . 254.665000 . -91.679404,143.436877 . 254.665000 . -103.175535, 4.943840, astar, 0.000000, 148.315191, 
 
 
 Analyzed Data
