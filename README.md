@@ -4,7 +4,9 @@
 
 ## Project Overview
 
-  This project constituted creating a drone simulation package delivery system for the University of Minnesota Twin Cities campus. There are two user interactive parts of this project. The first of which is a webpaage to view the movement of a drone picking up and delivery a package to a specified location. The second is a scheduler page where the user can choose the pickup and dropof points for the drone, and a path strategy for the drone to use for its delivery. On this scheduler page you can also view a list of all the deliveries the user has initiated. 
+  This project constituted creating a drone simulation package delivery system for the University of Minnesota Twin Cities campus. There are two user interactive parts of this project. The first of which is a webpaage to view the movement of a drone picking up and delivery a package to a specified location. The second is a scheduler page where the user can choose the pickup and dropof points for the drone, and a path strategy for the drone to use for its delivery. On this scheduler page you can also view a list of all the deliveries the user has initiated.
+  
+  A link to our video presentation can be found here https://youtu.be/p-JWOgUTj1A
 
 ## How to Run
 
