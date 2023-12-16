@@ -9,9 +9,9 @@ Singleton::Singleton() {}
 
 Singleton::~Singleton() {}
 
-Singleton::Singleton(const Singleton& other) = delete;
+// Singleton::Singleton(const Singleton& other) = delete;
 
-Singleton& Singleton::operator=(const Singleton& other) = delete;
+// Singleton& Singleton::operator=(const Singleton& other) = delete;
 
 Singleton* Singleton::get_instance() {
   if (singleton_ == nullptr) {
