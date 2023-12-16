@@ -25,12 +25,12 @@ class Singleton {
    * @param other Singleton object being assigned
    * @return return the new assigned singleton
    */
-  Singleton& operator=(const Singleton& other);
+  Singleton& operator=(const Singleton& other) = delete;
   /**
    * @brief copy constructor for the singleton
    * @param other singleton being copied
    */
-  Singleton(const Singleton& other);
+  Singleton(const Singleton& other) = delete;
   /**
    * @brief get an instance of this singleton
    * @return singleton pointer
